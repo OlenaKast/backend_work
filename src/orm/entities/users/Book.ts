@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Author } from "./Author";
 import { Genre } from "./Genre";
+import { Script } from "./Script";
 
 @Entity('books')
 export class Book {
@@ -19,6 +20,12 @@ export class Book {
   @Column('decimal', { precision: 8, scale: 2, nullable: true })
   price: number;
 
+  @Column({ name: 'status_book', length: 20 })
+  status: string;
+
+  @Column({ name: 'pages_number_book', nullable: true })
+  pages: number;
+
   @ManyToOne(() => Author, (author) => author.books)
   @JoinColumn({ name: 'authorId' })
   author: Author;
@@ -29,6 +36,13 @@ export class Book {
   @ManyToOne(() => Genre, (genre) => genre.books)
   @JoinColumn({ name: 'genreId' })
   genre: Genre;
+
+  @OneToOne(() => Script, (script) => script.book)
+  @JoinColumn({ name: 'id_script' })
+  script: Script;
+
+  @Column({ name: 'id_script', nullable: true })
+  scriptId: number;
 
   @Column({ nullable: true })
   genreId: number;
