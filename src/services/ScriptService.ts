@@ -7,7 +7,6 @@ export class ScriptService {
     const scriptRepo = getRepository(Script);
     const authorRepo = getRepository(Author);
 
-    // Знаходимо автора
     const author = await authorRepo.findOne({ where: { id: data.authorId } });
     if (!author) throw new Error("Author not found");
 

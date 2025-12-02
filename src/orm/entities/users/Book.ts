@@ -1,7 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, OneToMany, JoinColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Author } from "./Author";
 import { Genre } from "./Genre";
 import { Script } from "./Script";
+import { OrderBook } from "./OrderBook";
+import { Review } from "./Review";
 
 @Entity('books')
 export class Book {
@@ -40,6 +42,12 @@ export class Book {
   @OneToOne(() => Script, (script) => script.book)
   @JoinColumn({ name: 'id_script' })
   script: Script;
+
+  @OneToMany(() => OrderBook, ob => ob.book)
+  orders: OrderBook[];
+
+  @OneToMany(() => Review, review => review.book)
+  reviews: Review[];
 
   @Column({ name: 'id_script', nullable: true })
   scriptId: number;

@@ -1,13 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn, CreateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, OneToMany, JoinColumn, CreateDateColumn } from "typeorm";
 import { Author } from "./Author";
 import { Book } from "./Book";
-
-export enum ScriptStatus {
-  DRAFT = 'чернетка',
-  APPROVED = 'схвалено',
-  REJECTED = 'відхилено',
-  REVISION = 'доопрацювання'
-}
+import { ScriptStatus } from "../../enums";
+import { ScriptEmployee } from "./ScriptEmployee";
 
 @Entity('scripts')
 export class Script {
@@ -43,4 +38,7 @@ export class Script {
 
   @OneToOne(() => Book, (book) => book.script)
   book: Book;
+
+  @OneToMany(() => ScriptEmployee, se => se.script)
+  employeeAssignments: ScriptEmployee[];
 }

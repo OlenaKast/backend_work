@@ -1,22 +1,36 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm";
-
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
+import { ScriptEmployee } from "./ScriptEmployee";
 @Entity('employees')
 export class Employee {
-  @PrimaryGeneratedColumn({ name: 'id_employee' })
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'fullname_employee', length: 100 })
+  @Column({ length: 100 })
   fullName: string;
 
-  @Column({ name: 'post_employee', length: 30 })
+  @Column({ length: 50 })
   post: string;
 
-  @Column({ name: 'phone_employee', length: 10 })
-  phone: string;
+  @Column({ length: 20 })
+  phoneNumber: string;
 
-  @Column({ name: 'email_employee', length: 254 })
+  @Column({ unique: true, length: 254 })
   email: string;
 
-  @Column({ name: 'date_hire_employee' })
+  @Column()
+  password: string;
+
+  @Column({ type: 'date', nullable: true })
   dateHire: Date;
+
+  @Column({ length: 100, nullable: true })
+  unit: string;
+
+  @OneToMany(() => ScriptEmployee, se => se.employee)
+  scriptAssignments: ScriptEmployee[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
