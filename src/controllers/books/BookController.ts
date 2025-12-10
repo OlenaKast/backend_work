@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { BookService } from "../../services/BookService";
+import { BookResponseDTO } from "../../dto/BookResponseDTO";
 
 export class BookController {
   private service = new BookService();
@@ -7,7 +8,7 @@ export class BookController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.service.create(req.body);
-      res.status(201).json(result);
+      res.status(201).json(new BookResponseDTO(result)); 
     } catch (error) {
       next(error);
     }
@@ -15,8 +16,9 @@ export class BookController {
 
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await this.service.findAll();
-      res.status(200).json(result);
+      const results = await this.service.findAll();
+      const dtos = results.map(book => new BookResponseDTO(book));
+      res.status(200).json(dtos);
     } catch (error) {
       next(error);
     }

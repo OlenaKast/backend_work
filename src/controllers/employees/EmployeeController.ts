@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { EmployeeService } from "../../services/EmployeeService";
+import { EmployeeResponseDTO } from "../../dto/EmployeeResponseDTO";
 
 export class EmployeeController {
   private service = new EmployeeService();
@@ -7,7 +8,7 @@ export class EmployeeController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.service.create(req.body);
-      res.status(201).json(result);
+      res.status(201).json(new EmployeeResponseDTO(result));
     } catch (error) { next(error); }
   }
 
